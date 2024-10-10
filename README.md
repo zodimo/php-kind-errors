@@ -1,3 +1,3 @@
 # Kind Errors
 
-The idea is improve error definition and handling
+The idea is to improve error definitions and handling
