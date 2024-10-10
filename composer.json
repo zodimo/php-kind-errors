@@ -5,12 +5,12 @@
   "license": "mit",
   "autoload": {
     "psr-4": {
-      "Zodimo\\KindErrors\\": "src/"
+      "KindErrors\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Zodimo\\KindErrors\\Tests\\": "tests/"
+      "KindErrors\\Tests\\": "tests/"
     }
   },
   "authors": [
@@ -20,13 +20,13 @@
     }
   ],
   "require": {
-    "php": "~7.4|~8"
+    "php": "~7.4|~8",
+    "zodimo/base-return": "^0.6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.6",
     "phpstan/phpstan": "^1.11",
-    "friendsofphp/php-cs-fixer": "^3.62",
-
+    "friendsofphp/php-cs-fixer": "^3.62"
   },
   "scripts": {
     "test": [
