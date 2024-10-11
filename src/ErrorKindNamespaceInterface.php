@@ -24,4 +24,13 @@ interface ErrorKindNamespaceInterface
      * @return ErrorKindInterface<KINDS>
      */
     public function createErrorKindUnsafe(string $kind): ErrorKindInterface;
+
+    /**
+     * @template KINDARGS of array<string, mixed>
+     *
+     * @param KindError<KINDS,KINDARGS> $kindError
+     *
+     * @return KINDARGS
+     */
+    public function getArgsFromKindError(KindError $kindError): array;
 }

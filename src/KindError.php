@@ -8,8 +8,9 @@ use Zodimo\KindErrors\Models\ErrorKindInterface;
 
 /**
  * @template KINDS of array<string>
+ * @template ARGS of array<string,mixed>
  *
- * @implements KindErrorInterface<KINDS>
+ * @implements KindErrorInterface<KINDS,ARGS>
  */
 class KindError implements KindErrorInterface
 {
@@ -20,12 +21,33 @@ class KindError implements KindErrorInterface
     private string $message;
 
     /**
-     * @param ErrorKindInterface<KINDS> $errorKind
+     * @var array<string,mixed>
      */
-    public function __construct(ErrorKindInterface $errorKind, string $message)
+    private array $args;
+
+    /**
+     * @param ErrorKindInterface<KINDS> $errorKind
+     * @param ARGS                      $args
+     */
+    public function __construct(ErrorKindInterface $errorKind, string $message, array $args = [])
     {
         $this->errorkind = $errorKind;
         $this->message = $message;
+        $this->args = $args;
+    }
+
+    /**
+     * @template _KINDS of array<string>
+     * @template _ARGS of array<string,mixed>
+     *
+     * @param ErrorKindInterface<_KINDS> $errorKind
+     * @param _ARGS                      $args
+     *
+     * @return KindError<_KINDS,_ARGS>
+     */
+    public static function create(ErrorKindInterface $errorKind, string $message, array $args = []): KindError
+    {
+        return new self($errorKind, $message, $args);
     }
 
     public function getErrorKind(): ErrorKindInterface
@@ -36,5 +58,13 @@ class KindError implements KindErrorInterface
     public function getMessage(): string
     {
         return $this->message;
+    }
+
+    /**
+     * @return ARGS
+     */
+    public function getArgs(): array
+    {
+        return $this->args;
     }
 }
