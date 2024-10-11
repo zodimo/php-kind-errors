@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Zodimo\KindErrors;
 
-use Zodimo\BaseReturn\Option;
-
 /**
  * @template NAMESPACE_KINDS of array<string>
  */
@@ -25,17 +23,17 @@ class KindErrorService
     }
 
     /**
+     * @template ARGS of array<string,mixed>
+     *
      * @param value-of<NAMESPACE_KINDS> $kind
+     * @param ARGS                      $args
+     *
+     * @return KindError<NAMESPACE_KINDS,ARGS>
      */
-    public function createErrorUnsafe(string $kind, string $message, ?KindErrorInterface $parentError = null): KindError
+    public function createErrorUnsafe(string $kind, string $message, array $args = []): KindError
     {
-        if (null == $parentError) {
-            $parentErrorOption = Option::none();
-        } else {
-            $parentErrorOption = Option::some($parentError);
-        }
         $errorKind = $this->errorKindNamespace->createErrorKindUnsafe($kind);
 
-        return new KindError($errorKind, $message, $parentErrorOption);
+        return new KindError($errorKind, $message, $args);
     }
 }
