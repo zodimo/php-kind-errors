@@ -2,25 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Zodimo\KindErrors;
+namespace KindErrors;
 
-use Zodimo\KindErrors\Models\ErrorKindInterface;
+use UnitEnum;
 
 /**
- * @template KINDS of array<string>
- * @template ARGS of array<string, mixed>
+ * @template KIND of UnitEnum
  */
 interface KindErrorInterface
 {
     /**
-     * @return ErrorKindInterface<KINDS>
+     * @return KIND
      */
-    public function getErrorKind(): ErrorKindInterface;
+    public function getKind(): UnitEnum;
 
     public function getMessage(): string;
 
-    /**
-     * @return ARGS
-     */
-    public function getArgs(): array;
+    public function getContext(): ErrorContext;
 }

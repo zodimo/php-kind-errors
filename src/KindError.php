@@ -2,57 +2,62 @@
 
 declare(strict_types=1);
 
-namespace Zodimo\KindErrors;
+namespace KindErrors;
 
-use Zodimo\KindErrors\Models\ErrorKindInterface;
+use UnitEnum;
 
 /**
- * @template KINDS of array<string>
- * @template ARGS of array<string,mixed>
+ * @template KIND of UnitEnum
  *
- * @implements KindErrorInterface<KINDS,ARGS>
+ * @implements KindErrorInterface<KIND>
  */
 class KindError implements KindErrorInterface
 {
     /**
-     * @var ErrorKindInterface<KINDS>
+     * @var KIND
      */
-    private ErrorKindInterface $errorkind;
+    private UnitEnum $kind;
     private string $message;
 
-    /**
-     * @var array<string,mixed>
-     */
-    private array $args;
+    private ErrorContext $context;
 
     /**
-     * @param ErrorKindInterface<KINDS> $errorKind
-     * @param ARGS                      $args
+     * @param KIND $kind
      */
-    public function __construct(ErrorKindInterface $errorKind, string $message, array $args = [])
+    private function __construct(UnitEnum $kind, string $message, ErrorContext $context)
     {
-        $this->errorkind = $errorKind;
+        $this->kind = $kind;
         $this->message = $message;
-        $this->args = $args;
+        $this->context = $context;
+    }
+
+    public function __toString(): string
+    {
+        $kindClass = get_class($this->kind);
+        $kindKey = $this->kind->name;
+        $message = $this->getMessage();
+        $kindAsString = "{$kindClass}::{$kindKey}";
+
+        return "KindError({$kindAsString}): {$message}";
     }
 
     /**
-     * @template _KINDS of array<string>
-     * @template _ARGS of array<string,mixed>
+     * @template _KIND of UnitEnum
      *
-     * @param ErrorKindInterface<_KINDS> $errorKind
-     * @param _ARGS                      $args
+     * @param _KIND $kind
      *
-     * @return KindError<_KINDS,_ARGS>
+     * @return KindError<_KIND>
      */
-    public static function create(ErrorKindInterface $errorKind, string $message, array $args = []): KindError
+    public static function create(UnitEnum $kind, string $message, ?ErrorContext $context = null): KindError
     {
-        return new self($errorKind, $message, $args);
+        $context ??= ErrorContext::create();
+
+        return new self($kind, $message, $context);
     }
 
-    public function getErrorKind(): ErrorKindInterface
+    public function getKind(): UnitEnum
     {
-        return $this->errorkind;
+        return $this->kind;
     }
 
     public function getMessage(): string
@@ -60,11 +65,8 @@ class KindError implements KindErrorInterface
         return $this->message;
     }
 
-    /**
-     * @return ARGS
-     */
-    public function getArgs(): array
+    public function getContext(): ErrorContext
     {
-        return $this->args;
+        return $this->context;
     }
 }
