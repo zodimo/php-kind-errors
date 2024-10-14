@@ -65,8 +65,8 @@ class KindError implements KindErrorInterface
         return $this->message;
     }
 
-    public function getContext(): ErrorContext
+    public function getContext(): array
     {
-        return $this->context;
+        return $this->context->unwrapContext();
     }
 }

@@ -18,5 +18,8 @@ interface KindErrorInterface
 
     public function getMessage(): string;
 
-    public function getContext(): ErrorContext;
+    /**
+     * @return array<string,mixed>
+     */
+    public function getContext(): array;
 }
